@@ -192,6 +192,8 @@ Logger.prototype.addSink = function (sink) {
 Logger.prototype.root = new Logger('root', 20);
 Logger.prototype.hier = new Hierarchy(Logger.prototype.root);
 
+module.exports.Sink = Sink;
+module.exports.Hierarchy = Hierarchy;
 module.exports.Logger = Logger;
 module.exports.getLogger = function (name) {
     var hier = Logger.prototype.hier;
