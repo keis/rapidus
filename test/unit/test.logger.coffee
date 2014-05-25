@@ -1,4 +1,4 @@
-{Logger, Record} = require '../..'
+{Logger, Record, Sink} = require '../..'
 
 describe "Logger", ->
     describe "getEffectiveLevel", ->
@@ -38,3 +38,10 @@ describe "Logger", ->
             log = new Logger "foo", 10
             record = log.createRecord 20, "message", ["arg1", "arg2"]
             assert.instanceOf record, Record
+
+    describe "addSink", ->
+        it "wraps function in Sink instance", ->
+            log = new Logger "foo"
+            log.addSink (record) ->
+                something
+            assert.instanceOf log.sinks[0], Sink
