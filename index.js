@@ -22,6 +22,21 @@
  *  A hierarchy of loggers
  */
 
+var util = require('util');
+
+function extend(to, from) {
+    from.forEach(function (el) { to.push(el); });
+    return to;
+}
+
+function defaultFormat(record) {
+    return record.getMessage();
+}
+
+function defaultWrite(record) {
+    process.stderr.write(this.format(record) + "\n");
+}
+
 function Record(name, level, time, msg, args) {
     this.name = name;
     this.level = level;
@@ -31,15 +46,12 @@ function Record(name, level, time, msg, args) {
 }
 
 Record.prototype.getMessage = function () {
-    return this.msg + JSON.stringify(this.args);
-}
-
-function defaultFormat(record) {
-    return record.getMessage();
-}
-
-function defaultWrite(record) {
-    process.stderr.write(this.format(record) + "\n");
+    if (this.args === null) {
+        return this.msg;
+    }
+    this.msg = util.format.apply(null, extend([this.msg], this.args));
+    this.args = null;
+    return this.msg;
 }
 
 function Sink(write, format, level) {
