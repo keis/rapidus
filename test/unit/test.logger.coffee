@@ -1,6 +1,8 @@
-{Logger, Record, Sink} = require '../..'
+sinon = require 'sinon'
 
 describe "Logger", ->
+    {Logger, Record, Sink} = require '../..'
+
     describe "getEffectiveLevel", ->
         it "returns the level of the logger when set", ->
             log = new Logger "foo", 10
@@ -27,7 +29,7 @@ describe "Logger", ->
             assert.isFalse log.isEnabledFor 9
 
         it "uses the effective level", ->
-            parent = new Logger "foo", 20   
+            parent = new Logger "foo", 20
             log = new Logger "bar"
             log.parent = parent
             assert.isTrue log.isEnabledFor 20
@@ -45,3 +47,34 @@ describe "Logger", ->
             log.addSink (record) ->
                 something
             assert.instanceOf log.sinks[0], Sink
+
+        it "appends sink instances as is", ->
+            log = new Logger "foo"
+            sink = new Sink
+            log.addSink sink
+            assert.instanceOf log.sinks[0], Sink
+            assert.strictEqual log.sinks[0], sink
+
+    describe "log", ->
+        it "calls sinks with record created from input", ->
+            log = new Logger "foo"
+            sink = sinon.stub()
+            log.addSink sink
+            log.log 10, "foo"
+            assert.calledOnce sink
+            assert.calledWith sink, sinon.match.instanceOf Record
+
+        it "does not call any sinks when level is below logger threshold", ->
+            log = new Logger "foo", 20
+            sink = sinon.stub()
+            log.addSink sink
+            log.log 10, "foo"
+            assert.equal sink.called, 0
+
+        it "does not call sink when level is below sink threshold", ->
+            log = new Logger "foo", 20
+            sink = sinon.stub()
+            log.addSink new Sink sink, null, 30
+            log.addSink new Sink sink, null, 20
+            log.log 20, "foo"
+            assert.calledOnce sink

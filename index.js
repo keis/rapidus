@@ -155,7 +155,7 @@ Logger.prototype.callSinks = function (record) {
         i;
     for (i = 0; i < this.sinks.length; i++) {
         sink = this.sinks[i];
-        if (record.level > (sink.level || 0)) {
+        if (record.level >= (sink.level || 0)) {
             sink.handle(record);
         }
     }
