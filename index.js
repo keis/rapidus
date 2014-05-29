@@ -22,6 +22,22 @@
  *  A hierarchy of loggers
  */
 
+var util = require('util'),
+    proxy = require('./proxy');
+
+function extend(to, from) {
+    from.forEach(function (el) { to.push(el); });
+    return to;
+}
+
+function defaultFormat(record) {
+    return record.getMessage();
+}
+
+function defaultWrite(record) {
+    process.stderr.write(this.format(record) + "\n");
+}
+
 function Record(name, level, time, msg, args) {
     this.name = name;
     this.level = level;
@@ -31,15 +47,12 @@ function Record(name, level, time, msg, args) {
 }
 
 Record.prototype.getMessage = function () {
-    return this.msg + JSON.stringify(this.args);
-}
-
-function defaultFormat(record) {
-    return record.getMessage();
-}
-
-function defaultWrite(record) {
-    process.stderr.write(this.format(record) + "\n");
+    if (this.args === null) {
+        return this.msg;
+    }
+    this.msg = util.format.apply(null, extend([this.msg], this.args));
+    this.args = null;
+    return this.msg;
 }
 
 function Sink(write, format, level) {
@@ -136,7 +149,7 @@ Logger.prototype.getEffectiveLevel = function () {
         if (logger.level) {
             return logger.level;
         }
-    } while (logger = logger.parent);
+    } while ((logger = logger.parent));
 
     return 0;
 }
@@ -147,7 +160,16 @@ Logger.prototype.isEnabledFor = function (level) {
 
 Logger.prototype.createRecord = function (level, msg, args) {
     var time = Date.now();
+
     return new Record(this.name, level, time, msg, args);
+}
+
+Logger.prototype.importRecord = function (record) {
+    return new Record(record.name,
+                      record.level,
+                      new Date(record.time),
+                      record.msg,
+                      record.args);
 }
 
 Logger.prototype.callSinks = function (record) {
@@ -161,9 +183,15 @@ Logger.prototype.callSinks = function (record) {
     }
 }
 
+Logger.prototype.dispatch = function (record) {
+    var logger = this;
+    do {
+        logger.callSinks(record);
+    } while ((logger = logger.parent));
+}
+
 Logger.prototype.log = function () {
-    var logger = this,
-        args = Array.prototype.slice.call(arguments),
+    var args = Array.prototype.slice.call(arguments),
         level = args.shift(),
         msg = args.shift(),
         record;
@@ -174,12 +202,12 @@ Logger.prototype.log = function () {
 
     record = this.createRecord(level, msg, args);
 
-    // When cluster.worker this is where it should be dispatched to the master
-    // proxy attribute on hier?
+    if (this.hier.proxy) {
+        this.hier.proxy.sendRecord(record);
+    }
 
-    do {
-        logger.callSinks(record);
-    } while (logger = logger.parent);
+    this.dispatch(record);
+
 }
 
 Logger.prototype.addSink = function (sink) {
@@ -196,7 +224,20 @@ module.exports.Sink = Sink;
 module.exports.Hierarchy = Hierarchy;
 module.exports.Record = Record;
 module.exports.Logger = Logger;
+
 module.exports.getLogger = function (name) {
     var hier = Logger.prototype.hier;
     return hier.getLogger(name);
+}
+
+module.exports.isProxyAvailable = proxy.isAvailable;
+
+module.exports.enableProxy = function () {
+    var hier = Logger.prototype.hier;
+    hier.proxy = proxy.createClient();
+}
+
+module.exports.createProxy = function (path) {
+    var hier = Logger.prototype.hier;
+    return proxy.createServer(path, hier);
 }
