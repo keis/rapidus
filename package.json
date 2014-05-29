@@ -10,6 +10,6 @@
     "istanbul": "~0.2.10",
     "grunt": "~0.4.5",
     "grunt-docco": "~0.3.3",
-    "grunt-contrib-watch": "~0.6.1",
+    "grunt-contrib-watch": "~0.6.1"
   }
 }
