@@ -23,11 +23,29 @@
  */
 
 var util = require('util'),
-    proxy = require('./proxy');
+    proxy = require('./proxy'),
+    logLevels,
+    levelNames;
 
-function extend(to, from) {
-    from.forEach(function (el) { to.push(el); });
-    return to;
+logLevels = {
+    'CRITICAL' : 50,
+    'ERROR' : 40,
+    'WARN' : 30,
+    'WARNING' : 30,
+    'INFO' : 20,
+    'DEBUG' : 10
+}
+
+levelNames = {
+    50 : 'CRITICAL',
+    40 : 'ERROR',
+    30 : 'WARNING',
+    20 : 'INFO',
+    10 : 'DEBUG',
+}
+
+function isString(obj) {
+    return Object.prototype.toString.call(obj) === '[object String]';
 }
 
 function defaultFormat(record) {
@@ -46,12 +64,23 @@ function Record(name, level, time, msg, args) {
     this.args = args;
 }
 
+Record.prototype.levelNames = levelNames;
+
+Record.prototype.getLevelName = function () {
+    return this.levelNames[this.level];
+}
+
 Record.prototype.getMessage = function () {
     if (this.args === null) {
         return this.msg;
     }
-    this.msg = util.format.apply(null, extend([this.msg], this.args));
+
+    var args = this.args.slice();
+
+    args.unshift(this.msg);
+    this.msg = util.format.apply(null, args);
     this.args = null;
+
     return this.msg;
 }
 
@@ -196,6 +225,10 @@ Logger.prototype.log = function () {
         msg = args.shift(),
         record;
 
+    if (isString(level)) {
+        level = logLevels[level]
+    }
+
     if (!this.isEnabledFor(level)) {
         return;
     }
@@ -216,6 +249,18 @@ Logger.prototype.addSink = function (sink) {
     }
     this.sinks.push(sink);
 }
+
+Object.keys(logLevels).forEach(function (name) {
+    var level = logLevels[name];
+
+    Logger.prototype[name.toLowerCase()] = function () {
+        var args = Array.prototype.slice.call(arguments);
+
+        args.unshift(level);
+
+        this.log.apply(this, args);
+    };
+});
 
 Logger.prototype.root = new Logger('root', 20);
 Logger.prototype.hier = new Hierarchy(Logger.prototype.root);

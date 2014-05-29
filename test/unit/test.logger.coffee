@@ -78,3 +78,20 @@ describe "Logger", ->
             log.addSink new Sink sink, null, 20
             log.log 20, "foo"
             assert.calledOnce sink
+
+        it "converts the symbolic names of log levels", ->
+            log = new Logger "foo"
+            sink = sinon.stub()
+            log.addSink sink
+            log.log 'WARNING', "foo"
+            assert.calledOnce sink
+            assert.equal sink.args[0][0].level, 30
+
+    describe "debug", ->
+        it "create log message at debug level", ->
+            log = new Logger "foo"
+            sink = sinon.stub()
+            log.addSink sink
+            log.debug "foo"
+            assert.calledOnce sink
+            assert.equal sink.args[0][0].level, 10
