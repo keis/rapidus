@@ -22,7 +22,8 @@
  *  A hierarchy of loggers
  */
 
-var util = require('util');
+var util = require('util'),
+    proxy = require('./proxy');
 
 function extend(to, from) {
     from.forEach(function (el) { to.push(el); });
@@ -148,7 +149,7 @@ Logger.prototype.getEffectiveLevel = function () {
         if (logger.level) {
             return logger.level;
         }
-    } while (logger = logger.parent);
+    } while ((logger = logger.parent));
 
     return 0;
 }
@@ -223,7 +224,20 @@ module.exports.Sink = Sink;
 module.exports.Hierarchy = Hierarchy;
 module.exports.Record = Record;
 module.exports.Logger = Logger;
+
 module.exports.getLogger = function (name) {
     var hier = Logger.prototype.hier;
     return hier.getLogger(name);
+}
+
+module.exports.isProxyAvailable = proxy.isAvailable;
+
+module.exports.enableProxy = function () {
+    var hier = Logger.prototype.hier;
+    hier.proxy = proxy.createClient();
+}
+
+module.exports.createProxy = function (path) {
+    var hier = Logger.prototype.hier;
+    return proxy.createServer(path, hier);
 }
