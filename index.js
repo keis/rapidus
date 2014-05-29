@@ -159,7 +159,16 @@ Logger.prototype.isEnabledFor = function (level) {
 
 Logger.prototype.createRecord = function (level, msg, args) {
     var time = Date.now();
+
     return new Record(this.name, level, time, msg, args);
+}
+
+Logger.prototype.importRecord = function (record) {
+    return new Record(record.name,
+                      record.level,
+                      new Date(record.time),
+                      record.msg,
+                      record.args);
 }
 
 Logger.prototype.callSinks = function (record) {
@@ -173,9 +182,15 @@ Logger.prototype.callSinks = function (record) {
     }
 }
 
+Logger.prototype.dispatch = function (record) {
+    var logger = this;
+    do {
+        logger.callSinks(record);
+    } while ((logger = logger.parent));
+}
+
 Logger.prototype.log = function () {
-    var logger = this,
-        args = Array.prototype.slice.call(arguments),
+    var args = Array.prototype.slice.call(arguments),
         level = args.shift(),
         msg = args.shift(),
         record;
@@ -186,12 +201,12 @@ Logger.prototype.log = function () {
 
     record = this.createRecord(level, msg, args);
 
-    // When cluster.worker this is where it should be dispatched to the master
-    // proxy attribute on hier?
+    if (this.hier.proxy) {
+        this.hier.proxy.sendRecord(record);
+    }
 
-    do {
-        logger.callSinks(record);
-    } while (logger = logger.parent);
+    this.dispatch(record);
+
 }
 
 Logger.prototype.addSink = function (sink) {
