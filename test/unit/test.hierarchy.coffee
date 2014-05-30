@@ -1,4 +1,4 @@
-{Hierarchy, Logger} = require '../..'
+{Hierarchy, Logger} = require '../../lib'
 
 describe "Hierarchy", ->
     root = new Logger 'root'

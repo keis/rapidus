@@ -1,7 +1,7 @@
 sinon = require 'sinon'
 
 describe 'Record', ->
-    {Record} = require '../..'
+    {Record} = require '../../lib'
 
     it "sets the expected attributes", ->
         record = new Record 'name', 'level', 'time', 'msg', 'args'

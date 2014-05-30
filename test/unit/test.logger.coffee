@@ -1,7 +1,7 @@
 sinon = require 'sinon'
 
 describe "Logger", ->
-    {Logger, Record, Sink} = require '../..'
+    {Logger, Record, Sink} = require '../../lib'
 
     describe "getEffectiveLevel", ->
         it "returns the level of the logger when set", ->

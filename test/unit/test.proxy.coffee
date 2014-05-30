@@ -1,4 +1,4 @@
-{Record} = require '../..'
+{Record} = require '../../lib'
 net = require 'net'
 sinon = require 'sinon'
 
@@ -42,7 +42,7 @@ send = (server, data) ->
 
 
 describe "proxy", ->
-    proxy = require '../../proxy'
+    proxy = require '../../lib/proxy'
 
     describe "isAvailable", ->
         it "is true if a proxy path is in the environment", ->

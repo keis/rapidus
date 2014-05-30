@@ -6,12 +6,12 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         docco: {
             debug: {
-                src: '*.js'
+                src: 'lib/*.js'
             }
         },
         watch: {
             scripts: {
-                files: '*.js',
+                files: 'lib/*.js',
                 tasks: ['docco', 'coverage'],
                 options: {interrupt: true}
             }
