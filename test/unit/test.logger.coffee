@@ -35,6 +35,12 @@ describe "Logger", ->
             assert.isTrue log.isEnabledFor 20
             assert.isFalse log.isEnabledFor 19
 
+    describe "setLevel", ->
+        it "sets the level from symbolic name", ->
+            log = new Logger "foo", 10
+            log.setLevel 'info'
+            assert.equal log.getEffectiveLevel(), 20
+
     describe "createRecord", ->
         it "creates an instance of record", ->
             log = new Logger "foo", 10

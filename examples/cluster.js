@@ -38,8 +38,8 @@ function worker() {
     }, 1000);
 }
 
-logging.getLogger('foo.bar').level = 40;
-logging.getLogger('foo.baz').level = 10;
+logging.getLogger('foo.bar').setLevel('ERROR');
+logging.getLogger('foo.baz').setLevel('DEBUG');
 
 if (cluster.isMaster) {
     master();
