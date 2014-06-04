@@ -10,9 +10,14 @@ module.exports = function(grunt) {
             }
         },
         watch: {
-            scripts: {
+            lib: {
                 files: 'lib/*.js',
-                tasks: ['docco', 'coverage'],
+                tasks: ['docco'],
+                options: {interrupt: true}
+            },
+            scripts: {
+                files: ['lib/*.js', '**/*.coffee'],
+                tasks: ['coverage'],
                 options: {interrupt: true}
             }
         }

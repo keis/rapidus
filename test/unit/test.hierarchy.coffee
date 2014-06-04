@@ -1,11 +1,12 @@
 {Hierarchy, Logger} = require '../../lib'
 
 describe "Hierarchy", ->
-    root = new Logger 'root'
     hier = null
+    root = new Logger null, 'root'
 
     beforeEach ->
         hier = new Hierarchy root
+        root.hier = hier
 
     it "creates a logger", ->
         log = hier.getLogger 'foo'
