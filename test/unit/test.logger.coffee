@@ -48,6 +48,30 @@ describe "Logger", ->
             record = log.createRecord 20, "message", ["arg1", "arg2"]
             assert.instanceOf record, Record
 
+    describe "importRecord", ->
+        it "creates a record instance from a JSON representation", ->
+            log = new Logger hier, 'foo', 10
+            extrecord =
+                name: 'foo'
+                level: 10
+                time: '1401995732345'
+                msg: 'zoidberg'
+                args: null
+            record = log.importRecord extrecord
+            assert.instanceOf record, Record
+
+        it "carries additional attributes to instance", ->
+            log = new Logger hier, 'foo', 10
+            extrecord =
+                name: 'foo'
+                level: 10
+                time: '1401995732345'
+                msg: 'zoidberg'
+                txid: 'asdaf'
+                args: null
+            record = log.importRecord extrecord
+            assert.propertyVal record, 'txid', 'asdaf'
+
     describe "addSink", ->
         it "wraps function in Sink instance", ->
             log = new Logger hier,  "foo"
