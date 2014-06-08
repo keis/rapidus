@@ -8,21 +8,15 @@ var express = require('express'),
     namespace = createNamespace('express-example'),
     app;
 
-// This is a pretty awful monkey-patch of the createRecord. There should be a
-// better way of doing this supported by the library
-(function patchCreateRecord() {
-    var origCreateRecord = logging.Logger.prototype.createRecord;
-    logging.Logger.prototype.createRecord = function () {
-        record = origCreateRecord.apply(this, arguments);
-        record.transactionId = namespace.get('continuationId');
-        return record;
-    }
-}());
+// Setup a processor that attaches the request id to the log record
+logging.getLogger('access').addProcessor(function (record) {
+    record.requestId = namespace.get('continuationId');
+});
 
 // Configure a logger that writes records to the console with their associated
-// transaction id
+// request id
 logging.getLogger('access').addSink(sinks.console(function (record) {
-    return record.transactionId + ' - ' + record.getMessage();
+    return record.requestId + ' - ' + record.getMessage();
 }));
 
 // Construct a express application with a middleware to configure an id for
