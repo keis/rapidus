@@ -48,6 +48,16 @@ describe "Logger", ->
             record = log.createRecord 20, "message", ["arg1", "arg2"]
             assert.instanceOf record, Record
 
+        it "calls all the attached processors", ->
+            log = new Logger hier,  "foo", 10
+            log.addProcessor (record) ->
+                record.procone = true
+            log.addProcessor (record) ->
+                record.proctwo = true
+            record = log.createRecord 20, "message", ["arg1", "arg2"]
+            assert.propertyVal record, 'procone', true
+            assert.propertyVal record, 'proctwo', true
+
     describe "importRecord", ->
         it "creates a record instance from a JSON representation", ->
             log = new Logger hier, 'foo', 10

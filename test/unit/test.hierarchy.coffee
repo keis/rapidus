@@ -17,6 +17,14 @@ describe "Hierarchy", ->
         assert.equal log.name, 'foo'
         assert.strictEqual log.parent, root
 
+    it "adds default processors to logger", ->
+        proc = (record) -> null
+
+        hier.addDefaultProcessor proc
+
+        log = hier.getLogger 'foo'
+        assert.deepEqual log.processors, [proc]
+
     it "returns the same logger when called twice", ->
         frst = hier.getLogger 'foo'
         scnd = hier.getLogger 'foo'
