@@ -8,6 +8,10 @@ describe "Hierarchy", ->
         hier = new Hierarchy root
         root.hier = hier
 
+    it "gives access to the root logger", ->
+        log = hier.getLogger()
+        assert.strictEqual log, root
+
     it "creates a logger", ->
         log = hier.getLogger 'foo'
         assert.equal log.name, 'foo'
