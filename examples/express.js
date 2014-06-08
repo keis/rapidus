@@ -9,7 +9,7 @@ var express = require('express'),
     app;
 
 // Setup a processor that attaches the request id to the log record
-logging.getLogger('access').addProcessor(function (record) {
+logging.addDefaultProcessor(function (record) {
     record.requestId = namespace.get('continuationId');
 });
 
