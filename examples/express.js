@@ -13,12 +13,6 @@ logging.addDefaultProcessor(function (record) {
     record.requestId = namespace.get('continuationId');
 });
 
-// Configure a logger that writes records to the console with their associated
-// request id
-logging.getLogger('app').addSink(sinks.console(function (record) {
-    return record.requestId + ' - ' + record.getMessage();
-}));
-
 // Configure a access log that is more or less directly yanked from morgan the
 // connect logger
 function accessLog() {
@@ -72,10 +66,17 @@ function accessLog() {
     }
 }
 
-logging.getLogger('access').addSink(sinks.console(function (record) {
-    // Supporting neat tokens like ':method :url :status' would be cool
-    return [record.requestId, record.method, record.url, record.status, '-', record.responseTime].join(' ');
-}));
+// Add a sink to the app logger that writes records to the console with their
+// associated request id
+logging.getLogger('app').addSink(
+    sinks.console(logging.createFormatter(
+        ':requestId - :levelName - :message')));
+
+// Add a sink to the access logger that writes http method, url etc to console
+logging.getLogger('access').addSink(
+    sinks.console(
+        logging.createFormatter(
+            ':requestId - :levelName - :method :url :status :responseTime')));
 
 // Construct a express application with a middleware to configure an id for
 // each request in the cls

@@ -13,14 +13,14 @@ describe 'Record', ->
 
     describe "getLevelName", ->
         it "returns the symbolic name of the level", ->
-            record = new Record 'name', 10, Date.now(), "test", []
+            record = new Record 'name', 10, new Date, "test", []
             assert.equal record.getLevelName(), 'DEBUG'
 
-            record = new Record 'name', 40, Date.now(), "test", []
+            record = new Record 'name', 40, new Date, "test", []
             assert.equal record.getLevelName(), 'ERROR'
 
     describe "getMessage", ->
         it "formats message by combining with args", ->
-            record = new Record 'name', 10, Date.now(), "%s - %s", ['foo', 10]
+            record = new Record 'name', 10, new Date, "%s - %s", ['foo', 10]
             message = record.getMessage()
             assert.equal message, "foo - 10"
