@@ -1,4 +1,5 @@
-{Record, Sink, createFormatter} = require '../../lib'
+{Record} = require '../../lib'
+{Sink, createFormatter} = require '../../lib/sinks'
 
 describe "createFormatter", ->
     record = new Record 'access', 10, new Date, "%s - %s", ['foo', 10]

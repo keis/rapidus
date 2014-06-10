@@ -3,10 +3,17 @@ var cluster = require('cluster'),
     sinks = require('../lib/sinks');
 
 function master() {
+    var logFile = sinks.file('./cluster-example.log');
     logging.createProxy();
 
     logging.getLogger('foo.baz').addSink(sinks.console());
-    logging.getLogger('foo').addSink(sinks.file('./cluster-example.log'));
+    logging.getLogger('foo').addSink(logFile);
+
+    process.on('SIGUSR2', function () {
+        logFile.reset();
+    });
+
+    logging.getLogger('foo.baz').info("master @ %s", process.pid);
 
     for (var i = 0; i < 4; i++) {
         cluster.fork();
@@ -23,7 +30,8 @@ function master() {
 
 function worker() {
     var bar = logging.getLogger('foo.bar'),
-        baz = logging.getLogger('foo.baz');
+        baz = logging.getLogger('foo.baz'),
+        count = 0;
 
     if (logging.isProxyAvailable()) {
         logging.enableProxy();
@@ -32,9 +40,10 @@ function worker() {
     process.on('SIGUSR2', function () {});
 
     setInterval(function () {
-        bar.info('test 1 %s', process.pid);
-        bar.error('test 2 %s', process.pid);
-        baz.debug('test 3 %s', process.pid);
+        count += 1;
+        bar.info('test 1 %s #%s', process.pid, count);
+        bar.error('test 2 %s #%s', process.pid, count);
+        baz.debug('test 3 %s #%s', process.pid, count);
     }, 1000);
 }
 
