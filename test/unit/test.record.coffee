@@ -24,3 +24,10 @@ describe 'Record', ->
             record = new Record 'name', 10, new Date, "%s - %s", ['foo', 10]
             message = record.getMessage()
             assert.equal message, "foo - 10"
+
+        it "caches the formatted message and unsets the original args", ->
+            record = new Record 'name', 10, new Date, "%s - %s", ['foo', 10]
+            x = record.getMessage()
+            assert.equal record.args, null
+            y = record.getMessage()
+            assert.equal x, y

@@ -57,10 +57,10 @@ describe "proxy", ->
         server = testServer()
 
         before (done) ->
-            server.listen(done)
+            server.listen done
 
         after (done) ->
-            server.close(done)
+            server.close done
 
         it "sends record over socket", (done) ->
             port = server.address().port
