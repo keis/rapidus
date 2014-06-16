@@ -1,4 +1,6 @@
 {
+  "name": "rapidus",
+  "version": "0.0.1",
   "main": "./lib",
   "scripts": {
     "test": "mocha --require test/bootstrap.js --compilers coffee:coffee-script/register --recursive test/unit"

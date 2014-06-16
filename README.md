@@ -1,5 +1,8 @@
-# no name yet
+# rapidus
 A logging package that does the essentials.
+
+> Something changed that's not your face
+> it's mine!
 
 # Core concepts
 
