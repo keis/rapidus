@@ -2,6 +2,10 @@
   "name": "rapidus",
   "version": "0.0.1",
   "main": "./lib",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/keis/rapidus.git"
+  },
   "scripts": {
     "test": "mocha --require test/bootstrap.js --compilers coffee:coffee-script/register --recursive test/unit"
   },

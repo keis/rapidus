@@ -2,7 +2,12 @@
 A logging package that does the essentials.
 
 > Something changed that's not your face
+
 > it's mine!
+
+# Partners in crime
+
+A [connect middleware that generates an access log](https://github.com/keis/rapidus-connect-logger)
 
 # Core concepts
 
