@@ -4,6 +4,10 @@ describe "Logger", ->
     {Logger, Record, Sink} = require '../../lib'
     hier = {}
 
+    it "accepts level as symbolic name", ->
+        log = new Logger hier, 'foo', 'error'
+        assert.equal log.getEffectiveLevel(), 40
+
     describe "getEffectiveLevel", ->
         it "returns the level of the logger when set", ->
             log = new Logger hier, 'foo', 10
