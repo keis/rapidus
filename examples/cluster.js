@@ -3,7 +3,7 @@ var cluster = require('cluster'),
     sinks = require('../lib/sinks');
 
 function master() {
-    var logFile = sinks.file('./cluster-example.log');
+    var logFile = sinks.file({path: './cluster-example.log'});
     logging.createProxy();
 
     logging.getLogger('foo.baz').addSink(sinks.console());
