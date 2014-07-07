@@ -44,3 +44,8 @@ describe "default logger hierarchy", ->
         it "creates a proxy server for the default hierarchy", ->
             proxy = logging.createProxy()
             assert.isFunction proxy.on
+
+    describe "createHierarchy", ->
+        it "creates a new hierarchy", ->
+            hier = logging.createHierarchy()
+            assert.instanceOf hier, logging.Hierarchy
