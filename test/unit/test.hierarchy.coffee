@@ -1,4 +1,5 @@
-{Hierarchy, Logger} = require '../../lib'
+{Hierarchy, Logger, Record} = require '../../lib'
+sinon = require 'sinon'
 
 describe "Hierarchy", ->
     hier = null
@@ -18,12 +19,14 @@ describe "Hierarchy", ->
         assert.strictEqual log.parent, root
 
     it "adds default processors to logger", ->
-        proc = (record) -> null
+        proc = sinon.stub()
 
         hier.addDefaultProcessor proc
 
         log = hier.getLogger 'foo'
-        assert.deepEqual log.processors, [proc]
+        log.info 'test'
+        assert.calledOnce proc
+        assert.calledWith proc, sinon.match.instanceOf Record
 
     it "returns the same logger when called twice", ->
         frst = hier.getLogger 'foo'

@@ -1,7 +1,8 @@
 net = require 'net'
+sinon = require 'sinon'
 
 describe "default logger hierarchy", ->
-    logging = require '../../lib'
+    {Record} = logging = require '../../lib'
     root = logging.getLogger()
     hier = root.hier
 
@@ -18,11 +19,13 @@ describe "default logger hierarchy", ->
 
     describe "addDefaultProcessor", ->
         it "adds a processor to the default hierarchy", ->
-            proc = (record) -> null
+            proc = sinon.stub()
 
             logging.addDefaultProcessor proc
             log = logging.getLogger 'bar'
-            assert.deepEqual log.processors, [proc]
+            log.info 'test'
+            assert.calledOnce proc
+            assert.calledWith proc, sinon.match.instanceOf Record
 
     describe "enableProxy", ->
         server = net.createServer()
