@@ -18,13 +18,13 @@ logging.addDefaultProcessor(function (record) {
 // associated request id
 logging.getLogger('app').addSink(
     sinks.console({
-        formatter: logging.createFormatter(
+        format: logging.createFormatter(
             ':requestId - :levelName - :message')}));
 
 // Add a sink to the access logger that writes http method, url etc to console
 logging.getLogger('access').addSink(
     sinks.console({
-        formatter: logging.createFormatter(
+        format: logging.createFormatter(
             ':requestId - :levelName - :method :url :status :responseTime')}));
 
 // Construct a express application with a middleware to configure an id for
