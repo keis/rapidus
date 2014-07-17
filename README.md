@@ -8,6 +8,7 @@ A logging package that does the essentials.
 # Partners in crime
 
 A [connect middleware that generates an access log](https://github.com/keis/rapidus-connect-logger)
+
 Colourful logging with [sparkle](https://github.com/keis/rapidus-sparkle)
 
 # Core concepts
