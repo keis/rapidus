@@ -6,7 +6,7 @@ var logging = require('../lib'),
     frmt,
     logger;
 
-// Configure a mapping between log levels and colors
+// Configure a mapping between log levels and colours
 levelColors = {
     'DEBUG': 'cyan',
     'WARNING': 'yellow',
@@ -15,18 +15,14 @@ levelColors = {
 
 // Create a sparkle formatter
 frmt = sparkle.createFormatter({
-    format: '%{green:time} %{:levelColor %{bold [:levelName]} :message}'
+    format: '%{green:time} %{:levelName %{bold [:levelName]} :message}',
+    colors: levelColors
 });
 
 // Create a logger
 logger = logging.getLogger('app');
 logger.setLevel('DEBUG');
 logger.addSink(sinks.console({format: frmt}));
-
-// Assign a colour to each record based on the log level
-logger.addProcessor(function (record) {
-    record.levelColor = levelColors[record.levelName()];
-})
 
 // Log some stuff
 logger.debug('some details');
