@@ -158,6 +158,34 @@ describe "Logger", ->
 
             assert.equal proxyHier.proxy.sendRecord.called, 0
 
+        it "calls sink further up the hierarchy", ->
+            log = new Logger hier, 'foo.bar', 20
+            log.parent = new Logger hier, 'foo', 20
+            psink = sinon.stub()
+            log.parent.addSink psink
+            sink = sinon.stub()
+            log.addSink sink
+
+            log.log 'WARNING', 'foo'
+
+            assert.calledOnce psink
+            assert.calledOnce sink
+            assert.equal sink.args[0][0].level, 30
+
+        it "does not propagate records further when `propagate` is false", ->
+            log = new Logger hier, 'foo.bar', 20
+            log.parent = new Logger hier, 'foo', 20
+            log.propagate = false
+            psink = sinon.stub()
+            log.parent.addSink psink
+            sink = sinon.stub()
+            log.addSink sink
+
+            log.log 'WARNING', 'foo'
+
+            assert.calledOnce sink
+            assert.equal psink.callCount, 0, "call count of parent"
+
     describe "debug", ->
         it "create log message at debug level", ->
             log = new Logger hier, 'foo'
