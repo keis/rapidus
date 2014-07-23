@@ -6,6 +6,7 @@
     "type": "git",
     "url": "https://github.com/keis/rapidus.git"
   },
+  "author": "David Keijser <keijser@gmail.com",
   "scripts": {
     "test": "mocha --require test/bootstrap.js --compilers coffee:coffee-script/register --recursive test/unit"
   },
