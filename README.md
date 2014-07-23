@@ -7,9 +7,22 @@ A logging package that does the essentials.
 
 # Partners in crime
 
-A [connect middleware that generates an access log](https://github.com/keis/rapidus-connect-logger)
+A [connect middleware](https://github.com/keis/rapidus-connect-logger) that generates an access log
 
 Colourful logging with [sparkle](https://github.com/keis/rapidus-sparkle)
+
+A module to [configure your logger](https://github.com/keis/rapidus-configure) from JSON, Yaml etc
+
+# Examples
+
+Basic usage is very similiar to `log4js` or python's `logging` module
+
+    logger = require('rapidus').getLogger('myapp.network');
+
+    logger.debug('connecting to %s', host)
+    logger.error('failed to connect', err);
+
+For more involved examples see the [examples repository](https://github.com/keis/rapidus-examples)
 
 # Core concepts
 
