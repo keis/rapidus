@@ -25,6 +25,13 @@ describe 'Record', ->
             message = record.getMessage()
             assert.equal message, "foo - 10"
 
+        it "uses the stack of error objects", ->
+            err = new Error 'test'
+
+            record = new Record 'name', 10, new Date, "error", [err]
+            message = record.getMessage()
+            assert.match message, /^error Error: test/
+
         it "caches the formatted message and unsets the original args", ->
             record = new Record 'name', 10, new Date, "%s - %s", ['foo', 10]
             x = record.getMessage()
