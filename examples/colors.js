@@ -15,7 +15,7 @@ levelColors = {
 
 // Create a sparkle formatter
 frmt = sparkle.createFormatter({
-    format: '%{green:time} %{:levelName %{bold [:levelName]} :message}',
+    format: '%{green:date :time} %{:levelName %{bold [:levelName]} :message}',
     colors: levelColors
 });
 

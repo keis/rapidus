@@ -4,10 +4,10 @@ describe 'Record', ->
     {Record} = require '../../lib'
 
     it "sets the expected attributes", ->
-        record = new Record 'name', 'level', 'time', 'msg', 'args'
+        record = new Record 'name', 'level', 'timestamp', 'msg', 'args'
         assert.equal record.name, 'name'
         assert.equal record.level, 'level'
-        assert.equal record.time, 'time'
+        assert.equal record.timestamp, 'timestamp'
         assert.equal record.msg, 'msg'
         assert.equal record.args, 'args'
 
@@ -31,3 +31,19 @@ describe 'Record', ->
             assert.equal record.args, null
             y = record.getMessage()
             assert.equal x, y
+
+    describe "getTime", ->
+        date = new Date 'Thu Aug 21 2014 10:38:27 GMT+0200 (CEST)'
+
+        it "returns a formatted time string", ->
+            record = new Record 'name', 10, date, "%s - %s", ['foo', 10]
+            time = record.getTime()
+            assert.equal time, '10:38:27.000'
+
+    describe "getDate", ->
+        date = new Date 'Thu Aug 21 2014 10:38:27 GMT+0200 (CEST)'
+
+        it "returns a formatted date string", ->
+            record = new Record 'name', 10, date, "%s - %s", ['foo', 10]
+            time = record.getDate()
+            assert.equal time, '2014-08-21'

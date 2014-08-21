@@ -73,18 +73,20 @@ describe "Logger", ->
             extrecord =
                 name: 'foo'
                 level: 10
-                time: '1401995732345'
+                timestamp: '1401995732345'
                 msg: 'zoidberg'
                 args: null
+
             record = log.importRecord extrecord
             assert.instanceOf record, Record
+            assert.instanceOf record.timestamp, Date
 
         it "carries additional attributes to instance", ->
             log = new Logger hier, 'foo', 10
             extrecord =
                 name: 'foo'
                 level: 10
-                time: '1401995732345'
+                timestamp: '1401995732345'
                 msg: 'zoidberg'
                 txid: 'asdaf'
                 args: null
