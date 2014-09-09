@@ -12,14 +12,15 @@
     "test": "mocha --require test/bootstrap.js --compilers coffee:coffee-script/register --recursive test/unit"
   },
   "devDependencies": {
-    "coffee-script": "~1.7.1",
     "chai": "~1.9.1",
-    "mocha": "~1.19.0",
-    "sinon": "~1.10.0",
-    "istanbul": "~0.2.10",
+    "coffee-script": "~1.7.1",
+    "coveralls": "^2.11.1",
     "grunt": "~0.4.5",
+    "grunt-contrib-watch": "~0.6.1",
     "grunt-docco": "~0.3.3",
-    "grunt-contrib-watch": "~0.6.1"
+    "istanbul": "~0.2.10",
+    "mocha": "~1.19.0",
+    "sinon": "~1.10.0"
   },
   "dependencies": {
     "dateformat": "^1.0.8-1.2.3"
