@@ -1,6 +1,10 @@
 # rapidus
 A logging package that does the essentials.
 
+
+[![Build Status](https://travis-ci.org/keis/rapidus.svg?branch=master)](https://travis-ci.org/keis/rapidus)
+[![Coverage Status](https://coveralls.io/repos/keis/rapidus/badge.png?branch=master)](https://coveralls.io/r/keis/rapidus?branch=master)
+
 > Something changed that's not your face
 
 > it's mine!
