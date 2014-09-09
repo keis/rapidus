@@ -196,3 +196,12 @@ describe "Logger", ->
             log.debug 'foo'
             assert.calledOnce sink
             assert.equal sink.args[0][0].level, 10
+
+    describe "trace", ->
+        it "create log message at trace level", ->
+            log = new Logger hier, 'foo'
+            sink = sinon.stub()
+            log.addSink sink
+            log.trace 'foo'
+            assert.calledOnce sink
+            assert.equal sink.args[0][0].level, 5
