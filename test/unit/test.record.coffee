@@ -40,7 +40,7 @@ describe 'Record', ->
             assert.equal x, y
 
     describe "getTime", ->
-        date = new Date 'Thu Aug 21 2014 10:38:27 GMT+0200 (CEST)'
+        date = new Date 'Thu Aug 21 2014 10:38:27'
 
         it "returns a formatted time string", ->
             record = new Record 'name', 10, date, "%s - %s", ['foo', 10]
@@ -48,7 +48,7 @@ describe 'Record', ->
             assert.equal time, '10:38:27.000'
 
     describe "getDate", ->
-        date = new Date 'Thu Aug 21 2014 10:38:27 GMT+0200 (CEST)'
+        date = new Date 'Thu Aug 21 2014 10:38:27'
 
         it "returns a formatted date string", ->
             record = new Record 'name', 10, date, "%s - %s", ['foo', 10]
