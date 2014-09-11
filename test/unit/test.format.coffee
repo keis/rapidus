@@ -21,6 +21,11 @@ describe "createFormatter", ->
         str = frmt record
         assert.equal str, 'DEBUG foo - 10'
 
+    it "formats undefined as a dash", ->
+        frmt = createFormatter ':levelName :badvariable'
+        str = frmt record
+        assert.equal str, 'DEBUG -'
+
 describe "defaultFormatter", ->
     record = new Record 'access', 10, new Date, "%s - %s", ['foo', 10]
     sink = new Sink
