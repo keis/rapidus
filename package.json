@@ -1,5 +1,6 @@
 {
   "name": "rapidus",
+  "description": "A logging package that does the essentials",
   "version": "0.3.3",
   "main": "./lib",
   "repository": {
