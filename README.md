@@ -1,9 +1,10 @@
 # rapidus
+
+[![NPM Version][npm-image]](https://npmjs.org/package/rapidus)
+[![Build Status][travis-image]](https://travis-ci.org/keis/rapidus)
+[![Coverage Status][coveralls-image]](https://coveralls.io/r/keis/rapidus?branch=master)
+
 A logging package that does the essentials.
-
-
-[![Build Status](https://travis-ci.org/keis/rapidus.svg?branch=master)](https://travis-ci.org/keis/rapidus)
-[![Coverage Status](https://coveralls.io/repos/keis/rapidus/badge.png?branch=master)](https://coveralls.io/r/keis/rapidus?branch=master)
 
 > Something changed that's not your face
 
@@ -53,3 +54,6 @@ Logger
 Hierarchy
  - A hierarchy of loggers
 
+[npm-image]: https://img.shields.io/npm/v/rapidus.svg?style=flat
+[travis-image]: https://img.shields.io/travis/keis/rapidus.svg?style=flat
+[coveralls-image]: https://img.shields.io/coveralls/keis/rapidus.svg?style=flat
