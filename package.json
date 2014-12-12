@@ -6,23 +6,23 @@
     "type": "git",
     "url": "https://github.com/keis/rapidus.git"
   },
-  "author": "David Keijser <keijser@gmail.com",
+  "author": "David Keijser <keijser@gmail.com>",
   "license": "MIT",
   "scripts": {
     "test": "mocha --require test/bootstrap.js --compilers coffee:coffee-script/register --recursive test/unit"
   },
   "devDependencies": {
-    "chai": "~1.9.1",
-    "coffee-script": "~1.7.1",
+    "chai": "^1.9.1",
+    "coffee-script": "^1.7.1",
     "coveralls": "^2.11.1",
-    "grunt": "~0.4.5",
-    "grunt-contrib-watch": "~0.6.1",
-    "grunt-docco": "~0.3.3",
-    "istanbul": "~0.2.10",
-    "mocha": "~1.19.0",
-    "sinon": "~1.10.0"
+    "grunt": "^0.4.5",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-docco": "^0.3.3",
+    "istanbul": "^0.3.5",
+    "mocha": "^2.0.1",
+    "sinon": "^1.10.0"
   },
   "dependencies": {
-    "dateformat": "^1.0.8-1.2.3"
+    "dateformat": "^1.0.11"
   }
 }
