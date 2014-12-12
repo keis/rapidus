@@ -48,8 +48,8 @@ describe "Hierarchy", ->
         assert.strictEqual subb.parent, log
 
     it "resets the sinks of all attached loggers", ->
-        suba = hier.getLogger 'foo'
-        subb = hier.getLogger 'bar'
+        suba = hier.getLogger 'foo.bar'
+        subb = hier.getLogger 'foo.baz'
 
         sinka = new Sink
         sinka.reset = sinon.stub()
@@ -66,7 +66,7 @@ describe "Hierarchy", ->
         assert.calledOnce sinka.reset
         assert.calledOnce sinkb.reset
 
-    it "reused sink is reset once", ->
+    it "resets a reused sink once", ->
         suba = hier.getLogger 'foo'
         subb = hier.getLogger 'bar'
 
