@@ -1,4 +1,4 @@
-{Hierarchy, Logger, Record} = require '../../lib'
+{Hierarchy, Logger, Record, Sink} = require '../../lib'
 sinon = require 'sinon'
 
 describe "Hierarchy", ->
@@ -46,3 +46,36 @@ describe "Hierarchy", ->
 
         assert.strictEqual suba.parent, log
         assert.strictEqual subb.parent, log
+
+    it "resets the sinks of all attached loggers", ->
+        suba = hier.getLogger 'foo'
+        subb = hier.getLogger 'bar'
+
+        sinka = new Sink
+        sinka.reset = sinon.stub()
+
+        sinkb = new Sink
+        sinkb.reset = sinon.stub()
+
+        suba.addSink sinka
+        suba.addSink sinkb
+        suba.addSink {}
+
+        hier.resetSinks()
+
+        assert.calledOnce sinka.reset
+        assert.calledOnce sinkb.reset
+
+    it "reused sink is reset once", ->
+        suba = hier.getLogger 'foo'
+        subb = hier.getLogger 'bar'
+
+        sinka = new Sink
+        sinka.reset = sinon.stub()
+
+        suba.addSink sinka
+        subb.addSink sinka
+
+        hier.resetSinks()
+
+        assert.calledOnce sinka.reset

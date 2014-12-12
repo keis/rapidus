@@ -2,7 +2,7 @@ net = require 'net'
 sinon = require 'sinon'
 
 describe "default logger hierarchy", ->
-    {Record} = logging = require '../../lib'
+    {Record, Sink} = logging = require '../../lib'
     root = logging.getLogger()
     hier = root.hier
 
@@ -52,3 +52,15 @@ describe "default logger hierarchy", ->
         it "creates a new hierarchy", ->
             hier = logging.createHierarchy()
             assert.instanceOf hier, logging.Hierarchy
+
+    describe "resetSinks", ->
+        it "resets the sinks of the default hierarchy", ->
+            sink = new Sink
+            sink.reset = sinon.stub()
+
+            logging.getLogger 'foo'
+                .addSink sink
+
+            logging.resetSinks()
+
+            assert.calledOnce sink.reset
