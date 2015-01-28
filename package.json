@@ -10,7 +10,8 @@
   "author": "David Keijser <keijser@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "mocha --require test/bootstrap.js --compilers coffee:coffee-script/register --recursive test/unit"
+    "test": "mocha --require test/bootstrap.js --compilers coffee:coffee-script/register --recursive test/unit",
+    "bench": "coffee -c test/benchmark.coffee ; matcha test/benchmark.js"
   },
   "devDependencies": {
     "chai": "^1.9.1",
@@ -20,6 +21,7 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-docco": "^0.3.3",
     "istanbul": "^0.3.5",
+    "matcha": "^0.6.0",
     "mocha": "^2.0.1",
     "sinon": "^1.10.0"
   },
