@@ -10,7 +10,7 @@
   "author": "David Keijser <keijser@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint lib test",
+    "lint": "eslint lib test && coffeelint test",
     "test": "mocha --require test/bootstrap.js --compilers coffee:coffee-script/register --recursive test/unit",
     "bench": "coffee -c test/benchmark.coffee ; matcha test/benchmark.js",
     "coverage": "istanbul cover _mocha --report lcovonly -- --require test/bootstrap.js --compilers coffee:coffee-script/register --recursive test/unit",
@@ -21,6 +21,7 @@
     "billom": "^1.0.2",
     "chai": "^2.1.2",
     "coffee-script": "^1.7.1",
+    "coffeelint": "^1.9.4",
     "coveralls": "^2.11.1",
     "eslint": "^0.17.1",
     "istanbul": "^0.3.5",
