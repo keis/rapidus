@@ -1,8 +1,14 @@
 sinon = require 'sinon'
+{Writable} = require 'readable-stream'
 
 describe "Logger", ->
   {Logger, Record, Sink} = require '../../lib'
   hier = {}
+
+  stubSink = ->
+    s = new Sink new Writable
+    s.write = sinon.stub()
+    s
 
   it "accepts level as symbolic name", ->
     log = new Logger hier, 'foo', 'error'
@@ -96,8 +102,8 @@ describe "Logger", ->
   describe "addSink", ->
     it "wraps function in Sink instance", ->
       log = new Logger hier, 'foo'
-      log.addSink (record) ->
-        something
+      log.addSink (record, encoding, callback) ->
+        callback()
       assert.instanceOf log.sinks[0], Sink
 
     it "appends sink instances as is", ->
@@ -110,34 +116,38 @@ describe "Logger", ->
   describe "log", ->
     it "calls sinks with record created from input", ->
       log = new Logger hier, 'foo'
-      sink = sinon.stub()
+      sink = stubSink()
       log.addSink sink
       log.log 10, "foo"
-      assert.calledOnce sink
-      assert.calledWith sink, sinon.match.instanceOf Record
+      assert.calledOnce sink.write
+      assert.calledWith sink.write, sinon.match.instanceOf Record
 
     it "does not call any sinks when level is below logger threshold", ->
       log = new Logger hier, 'foo', 20
-      sink = sinon.stub()
+      sink = stubSink()
       log.addSink sink
       log.log 10, 'foo'
-      assert.equal sink.called, 0
+      assert.equal sink.write.called, 0
 
     it "does not call sink when level is below sink threshold", ->
       log = new Logger hier, 'foo', 20
-      sink = sinon.stub()
-      log.addSink new Sink sink, null, 30
-      log.addSink new Sink sink, null, 20
+      sinka = stubSink()
+      sinka.setLevel 30
+      sinkb = stubSink()
+      sinkb.setLevel 20
+      log.addSink sinka
+      log.addSink sinkb
       log.log 20, 'foo'
-      assert.calledOnce sink
+      assert.notCalled sinka.write
+      assert.calledOnce sinkb.write
 
     it "converts the symbolic names of log levels", ->
       log = new Logger hier, 'foo'
-      sink = sinon.stub()
+      sink = stubSink()
       log.addSink sink
       log.log 'WARNING', 'foo'
-      assert.calledOnce sink
-      assert.equal sink.args[0][0].level, 30
+      assert.calledOnce sink.write
+      assert.equal sink.write.args[0][0].level, 30
 
     it "sends record to proxy", ->
       proxyHier =
@@ -164,45 +174,45 @@ describe "Logger", ->
     it "calls sink further up the hierarchy", ->
       log = new Logger hier, 'foo.bar', 20
       log.parent = new Logger hier, 'foo', 20
-      psink = sinon.stub()
+      psink = stubSink()
       log.parent.addSink psink
-      sink = sinon.stub()
+      sink = stubSink()
       log.addSink sink
 
       log.log 'WARNING', 'foo'
 
-      assert.calledOnce psink
-      assert.calledOnce sink
-      assert.equal sink.args[0][0].level, 30
+      assert.calledOnce psink.write
+      assert.calledOnce sink.write
+      assert.equal sink.write.args[0][0].level, 30
 
     it "does not propagate records further when `propagate` is false", ->
       log = new Logger hier, 'foo.bar', 20
       log.parent = new Logger hier, 'foo', 20
       log.propagate = false
-      psink = sinon.stub()
+      psink = stubSink()
       log.parent.addSink psink
-      sink = sinon.stub()
+      sink = stubSink()
       log.addSink sink
 
       log.log 'WARNING', 'foo'
 
-      assert.calledOnce sink
-      assert.equal psink.callCount, 0, "call count of parent"
+      assert.calledOnce sink.write
+      assert.equal psink.write.callCount, 0, "call count of parent"
 
   describe "debug", ->
     it "create log message at debug level", ->
       log = new Logger hier, 'foo'
-      sink = sinon.stub()
+      sink = stubSink()
       log.addSink sink
       log.debug 'foo'
-      assert.calledOnce sink
-      assert.equal sink.args[0][0].level, 10
+      assert.calledOnce sink.write
+      assert.equal sink.write.args[0][0].level, 10
 
   describe "trace", ->
     it "create log message at trace level", ->
       log = new Logger hier, 'foo'
-      sink = sinon.stub()
+      sink = stubSink()
       log.addSink sink
       log.trace 'foo'
-      assert.calledOnce sink
-      assert.equal sink.args[0][0].level, 5
+      assert.calledOnce sink.write
+      assert.equal sink.write.args[0][0].level, 5
