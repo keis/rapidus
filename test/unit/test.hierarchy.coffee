@@ -59,7 +59,7 @@ describe "Hierarchy", ->
 
     suba.addSink sinka
     suba.addSink sinkb
-    suba.addSink {}
+    suba.addSink new Sink
 
     hier.resetSinks()
 

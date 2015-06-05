@@ -1,56 +1,56 @@
-sinks = require '../../lib/sinks'
+sinon = require 'sinon'
+rewire = require 'rewire'
+{Writable} = require 'readable-stream'
 
 describe "Sink", ->
-  {Sink} = sinks
+  {Sink} = require '../../lib/sinks'
+  w = null
+
+  beforeEach ->
+    w = new Writable
+    w.write = sinon.stub()
 
   it "accepts level as symbolic name", ->
-    sink = new Sink null, null, 'ERROR'
+    sink = new Sink w, null, 'ERROR'
 
     assert.equal sink.level, 40
 
+  it "calls format function before passing it to the write stream", (done) ->
+    sentinel = {}
+    frmt = sinon.stub().returns 'formatted'
+    sink = new Sink w, frmt
+
+    sink.write sentinel
+
+    setImmediate ->
+      assert.calledOnce frmt
+      assert.calledWith frmt, sentinel
+      assert.calledOnce w.write
+      assert.calledWith w.write, 'formatted'
+      done()
+
   describe "setLevel", ->
     it "updates the level of the sink", ->
-      sink = new Sink null, null, 'ERROR'
+      sink = new Sink w, null, 'ERROR'
       sink.setLevel 20
       assert.equal sink.level, 20
 
     it "updates the level of the sink from symbolic name", ->
-      sink = new Sink null, null, 30
+      sink = new Sink w, null, 30
       sink.setLevel 'DEBUG'
       assert.equal sink.level, 10
 
+describe "WithNewLine", ->
+  sinks = rewire '../../lib/sinks'
+  WithNewLine = sinks.__get__ 'WithNewLine'
 
-describe "console", ->
-  it "returns a `Sink` instance", ->
-    sink = sinks.console()
-    assert.instanceOf sink, sinks.Sink
+  write = new Writable
+  write._write = sinon.stub()
 
-  it "attaches given formatter to sink", ->
-    sentinel = ->
-    sink = sinks.console
-      format: sentinel
-    assert.strictEqual sink.format, sentinel
+  nl = new WithNewLine
+  nl.pipe write
+  nl.write "hello"
 
-  it "sets level on sink", ->
-    sink = sinks.console
-      level: 20
-    assert.strictEqual sink.level, 20
-
-describe "file", ->
-  it "returns a `Sink` instance", ->
-    sink = sinks.file
-      path: '/dev/null'
-    assert.instanceOf sink, sinks.Sink
-
-  it "attaches given formatter to sink", ->
-    sentinel = ->
-    sink = sinks.file
-      path: '/dev/null'
-      format: sentinel
-    assert.strictEqual sink.format, sentinel
-
-  it "sets level on sink", ->
-    sink = sinks.file
-      path: '/dev/null'
-      level: 20
-    assert.strictEqual sink.level, 20
+  setImmediate ->
+    assert.calledOnce write._write
+    assert.calledWith write._write, "hello\n"
