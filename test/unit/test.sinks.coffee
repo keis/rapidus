@@ -1,4 +1,5 @@
 sinon = require 'sinon'
+rewire = require 'rewire'
 {Writable} = require 'readable-stream'
 
 describe "Sink", ->
@@ -38,3 +39,18 @@ describe "Sink", ->
       sink = new Sink w, null, 30
       sink.setLevel 'DEBUG'
       assert.equal sink.level, 10
+
+describe "WithNewLine", ->
+  sinks = rewire '../../lib/sinks'
+  WithNewLine = sinks.__get__ 'WithNewLine'
+
+  write = new Writable
+  write._write = sinon.stub()
+
+  nl = new WithNewLine
+  nl.pipe write
+  nl.write "hello"
+
+  setImmediate ->
+    assert.calledOnce write._write
+    assert.calledWith write._write, "hello\n"
