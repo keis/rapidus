@@ -6,10 +6,6 @@
 
 A logging package that does the essentials.
 
-> Something changed that's not your face
-
-> it's mine!
-
 # Partners in crime
 
 A [connect middleware](https://github.com/keis/rapidus-connect-logger) that generates an access log
@@ -53,6 +49,11 @@ Logger
 
 Hierarchy
  - A hierarchy of loggers
+
+
+> Something changed that's not your face
+
+> it's mine!
 
 [npm-image]: https://img.shields.io/npm/v/rapidus.svg?style=flat
 [travis-image]: https://img.shields.io/travis/keis/rapidus.svg?style=flat
