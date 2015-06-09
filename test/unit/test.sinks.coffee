@@ -40,14 +40,15 @@ describe "Sink", ->
       sink.setLevel 'DEBUG'
       assert.equal sink.level, 10
 
-describe "WithNewLine", ->
+
+describe "withNewLine", ->
   sinks = rewire '../../lib/sinks'
-  WithNewLine = sinks.__get__ 'WithNewLine'
+  withNewLine = sinks.__get__ 'withNewLine'
 
   write = new Writable
   write._write = sinon.stub()
 
-  nl = new WithNewLine
+  nl = withNewLine()
   nl.pipe write
   nl.write "hello"
 

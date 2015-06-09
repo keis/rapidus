@@ -108,7 +108,7 @@ describe "Logger", ->
 
     it "appends sink instances as is", ->
       log = new Logger hier, 'foo'
-      sink = new Sink
+      sink = new Sink new Writable
       log.addSink sink
       assert.instanceOf log.sinks[0], Sink
       assert.strictEqual log.sinks[0], sink
