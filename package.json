@@ -28,7 +28,8 @@
     "matcha": "^0.6.0",
     "mocha": "^2.0.1",
     "rewire": "^2.3.3",
-    "sinon": "^1.10.0"
+    "sinon": "^1.10.0",
+    "tempfile": "^1.1.1"
   },
   "dependencies": {
     "dullstring": "^1.0.1",
