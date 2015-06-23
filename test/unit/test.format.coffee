@@ -1,5 +1,5 @@
 {Record} = require '../../lib'
-{Sink, createFormatter} = require '../../lib/sinks'
+{Sink, createFormatter} = require '../../lib/'
 
 describe "createFormatter", ->
   record = new Record 'access', 10, new Date, "%s - %s", ['foo', 10]
@@ -25,6 +25,7 @@ describe "createFormatter", ->
     frmt = createFormatter ':levelName :badvariable'
     str = frmt record
     assert.equal str, 'DEBUG -'
+
 
 describe "defaultFormatter", ->
   record = new Record 'access', 10, new Date, "%s - %s", ['foo', 10]

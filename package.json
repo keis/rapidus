@@ -28,12 +28,18 @@
     "matcha": "^0.6.0",
     "mocha": "^2.0.1",
     "rewire": "^2.3.3",
-    "sinon": "^1.10.0"
+    "sinon": "^1.10.0",
+    "tempfile": "^1.1.1"
   },
   "dependencies": {
-    "dateformat": "^1.0.11",
+    "dullstring": "^1.0.1",
+    "log-record": "^1.0.0",
     "object-assign": "^3.0.0",
     "readable-stream": "^1.0.33",
+    "record-sink": "^2.0.0",
+    "sculpt": "^0.1.7",
+    "standard-levels": "^1.0.0",
+    "terminus": "^1.0.12",
     "through2": "^0.6.5"
   }
 }
