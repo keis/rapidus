@@ -79,3 +79,13 @@ describe "Hierarchy", ->
     hier.resetSinks()
 
     assert.calledOnce sinka.reset
+
+  it "changes the hier of a assimilated logger", ->
+    loga = new Logger null, 'test'
+
+    hier.manageLogger loga
+
+    logb = hier.getLogger 'test'
+
+    assert.strictEqual loga, logb
+    assert.strictEqual loga.hier, hier
