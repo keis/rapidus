@@ -4,7 +4,7 @@ sinon = require 'sinon'
 describe "default logger hierarchy", ->
   {Record, Sink} = logging = require '../../lib'
   root = logging.getLogger()
-  hier = root.hier
+  hier = root.context
 
   afterEach ->
     hier.processors = []

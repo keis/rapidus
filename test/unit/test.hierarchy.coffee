@@ -7,7 +7,7 @@ describe "Hierarchy", ->
 
   beforeEach ->
     hier = new Hierarchy root
-    root.hier = hier
+    root.context = hier
 
   it "gives access to the root logger", ->
     log = hier.getLogger()
@@ -80,7 +80,7 @@ describe "Hierarchy", ->
 
     assert.calledOnce sinka.reset
 
-  it "changes the hier of a assimilated logger", ->
+  it "changes the context of a assimilated logger", ->
     loga = new Logger null, 'test'
 
     hier.manageLogger loga
@@ -88,4 +88,4 @@ describe "Hierarchy", ->
     logb = hier.getLogger 'test'
 
     assert.strictEqual loga, logb
-    assert.strictEqual loga.hier, hier
+    assert.strictEqual loga.context, hier
