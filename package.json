@@ -34,8 +34,8 @@
   },
   "dependencies": {
     "dullstring": "^1.0.1",
-    "log-record": "^1.0.0",
-    "mlogy": "^1.0.2",
+    "log-record": "^1.0.1",
+    "mlogy": "^1.0.3",
     "record-sink": "^2.0.0",
     "sculpt": "^0.1.7"
   }
