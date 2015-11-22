@@ -42,16 +42,18 @@ describe "Sink", ->
 
 
 describe "withNewLine", ->
-  sinks = rewire '../../lib/sinks'
-  withNewLine = sinks.__get__ 'withNewLine'
+  it "writes the message with a newline", (done) ->
+    sinks = rewire '../../lib/sinks'
+    withNewLine = sinks.__get__ 'withNewLine'
 
-  write = new Writable
-  write._write = sinon.stub()
+    write = new Writable
+    write._write = sinon.stub()
 
-  nl = withNewLine()
-  nl.pipe write
-  nl.write "hello"
+    nl = withNewLine()
+    nl.pipe write
+    nl.write "hello"
 
-  setImmediate ->
-    assert.calledOnce write._write
-    assert.calledWith write._write, "hello\n"
+    setImmediate ->
+      assert.calledOnce write._write
+      assert.calledWith write._write, new Buffer "hello\n"
+     done()
