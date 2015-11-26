@@ -1,7 +1,7 @@
 {
   "name": "rapidus",
   "description": "A logging package that does the essentials",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "main": "./lib",
   "repository": {
     "type": "git",
